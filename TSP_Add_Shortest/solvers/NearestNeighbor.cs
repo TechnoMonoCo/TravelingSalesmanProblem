@@ -19,6 +19,11 @@ namespace TSP_Add_Shortest.solvers
 
         public void Solve()
         {
+            if (traversalOrder.Count != 0)
+            {
+                return;
+            }
+
             var visited = Enumerable.Repeat(false, nodes.Count).ToList();
 
             Node lastVisited = nodes.First();
