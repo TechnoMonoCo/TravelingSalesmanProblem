@@ -26,15 +26,15 @@ namespace TSP_Add_Shortest.solvers
 
             var visited = Enumerable.Repeat(false, nodes.Count).ToList();
 
-            Node lastVisited = nodes.First();
+            var lastVisited = nodes.First();
             traversalOrder.Add(lastVisited);
             visited[0] = true;
 
             while (traversalOrder.Count < nodes.Count)
             {
                 Node? best = null;
-                double bestDistance = double.MaxValue;
-                int loc = -1;
+                var bestDistance = double.MaxValue;
+                var loc = -1;
                 for (var i = 0; i < nodes.Count; i++)
                 {
                     if (visited[i])
