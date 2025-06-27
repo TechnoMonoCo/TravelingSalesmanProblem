@@ -9,14 +9,14 @@ namespace TSP_Add_Shortest_Tests.objects
         private readonly double fifteen = 15.0;
 
         [TestMethod]
-        public void TestZeroDistance()
+        public void Test_Distance_ZeroDistance()
         {
             var node = new Node(five, five);
             Assert.AreEqual(0, node.Distance(node));
         }
 
         [TestMethod]
-        public void TestHorizontalDistance()
+        public void Test_Distance_HorizontalDistance()
         {
             var node = new Node(five, five);
             var node2 = new Node(fifteen, five);
@@ -24,7 +24,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestVerticalDistance()
+        public void Test_Distance_VerticalDistance()
         {
             var node = new Node(five, five);
             var node2 = new Node(five, fifteen);
@@ -32,7 +32,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestDiagonalDistance()
+        public void Test_Distance_DiagonalDistance()
         {
             var node = new Node(0.0, 0.0);
             var node2 = new Node(3.0, 4.0);
@@ -40,7 +40,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestConnectTwoBareNodes()
+        public void Test_Connect_TwoBareNodes()
         {
             var a = new Node(0.0, 0.0);
             var b = new Node(3.0, 4.0);
@@ -55,7 +55,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestConnectThreeNodes()
+        public void Test_Connect_ThreeNodes()
         {
             var a = new Node(0.0, 0.0);
             var b = new Node(0.0, 0.0);
@@ -77,7 +77,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestConnectThreeNodesCircular()
+        public void Test_Connect_ThreeNodesCirclular()
         {
             var a = new Node(0.0, 0.0);
             var b = new Node(0.0, 0.0);
@@ -97,7 +97,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestConnectThrowsWhenConnectingThreeTimes()
+        public void Test_Connect_ThrowsWhenAlreadyFullyConnected()
         {
             var a = new Node(0.0, 0.0);
             var b = new Node(0.0, 0.0);

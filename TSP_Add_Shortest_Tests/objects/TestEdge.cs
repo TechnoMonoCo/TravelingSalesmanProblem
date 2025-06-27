@@ -6,7 +6,7 @@ namespace TSP_Add_Shortest_Tests.objects
     public class TestEdge
     {
         [TestMethod]
-        public void TestGivenSameNodeTwice()
+        public void Test_Constructor_GivenSameNode()
         {
             var node = new Node(0, 0);
             var edge = new Edge(node, node);
@@ -16,7 +16,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestGivenTwoNodes()
+        public void Test_Constructor_GivenDifferentNodes()
         {
             var a = new Node(0, 0);
             var b = new Node(0, 5);
@@ -27,7 +27,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestGivenTwoNodesComplexDistance()
+        public void Test_Constructor_GivenDifferentNodesComplexDistance()
         {
             var a = new Node(0, 0);
             var b = new Node(3, 4);
@@ -38,7 +38,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestCanConnectUnconnectedNodes()
+        public void Test_CanConnect_TwoBareNodes()
         {
             var a = new Node(0, 0);
             var b = new Node(0, 0);
@@ -47,7 +47,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestCanConnectOneNodeOneConnection()
+        public void Test_CanConnect_OneNodeWithOneConnection()
         {
             var a = new Node(0, 0);
             var b = new Node(0, 0);
@@ -58,7 +58,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestCanConnectTwoNodesOneConnectionEach()
+        public void Test_CanConnect_TwoNodeWithOneConnection()
         {
             var a = new Node(0, 0);
             var b = new Node(0, 0);
@@ -71,7 +71,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestCanConnectSecondNodeFullyConnected()
+        public void Test_CanConnect_SecondNodeFullyConnected()
         {
             var a = new Node(0, 0);
             var b = new Node(0, 0);
@@ -84,7 +84,7 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestCanConnectFirstNodeFullyConnected()
+        public void Test_CanConnect_FirstNodeFullyConnected()
         {
             var a = new Node(0, 0);
             var b = new Node(0, 0);
@@ -97,12 +97,24 @@ namespace TSP_Add_Shortest_Tests.objects
         }
 
         [TestMethod]
-        public void TestCanConnectNodesAlreadyConnected()
+        public void Test_CanConnect_AlreadyConnected()
         {
             var a = new Node(0, 0);
             var b = new Node(0, 0);
             a.Connect(b);
             var edge = new Edge(a, b);
+            Assert.IsFalse(edge.CanConnect());
+        }
+
+        [TestMethod]
+        public void Test_CanConnect_AlreadyChainConnected()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var c = new Node(0, 0);
+            a.Connect(b);
+            b.Connect(c);
+            var edge = new Edge(a, c);
             Assert.IsFalse(edge.CanConnect());
         }
     }

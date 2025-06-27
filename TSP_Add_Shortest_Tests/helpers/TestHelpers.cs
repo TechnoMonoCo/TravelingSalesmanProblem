@@ -7,7 +7,7 @@ namespace TSP_Add_Shortest_Tests.helpers
     public class TestHelpers
     {
         [TestMethod]
-        public void TestCalculateDistanceSimplePath()
+        public void Test_CalculatePathDistance_SimplePath()
         {
             var nodes = new List<Node>
             {
@@ -22,7 +22,7 @@ namespace TSP_Add_Shortest_Tests.helpers
         }
 
         [TestMethod]
-        public void TestCalculateDistanceBasicPath()
+        public void Test_CalculatePathDistance_BasicPath()
         {
             var nodes = new List<Node>
             {
@@ -37,7 +37,7 @@ namespace TSP_Add_Shortest_Tests.helpers
         }
 
         [TestMethod]
-        public void TestCalculateDistanceComplexPath()
+        public void Test_CalculatePathDistance_ComplexPath()
         {
             var nodes = new List<Node>
             {
@@ -50,13 +50,13 @@ namespace TSP_Add_Shortest_Tests.helpers
         }
 
         [TestMethod]
-        public void TestCalculateDistanceEmptyPath()
+        public void Test_CalculatePathDistance_EmptyPath()
         {
             Assert.AreEqual(0, Helpers.CalculatePathDistance([]));
         }
 
         [TestMethod]
-        public void TestCalculateDistanceNullPath()
+        public void Test_CalculatePathDistance_NullPath()
         {
             Assert.AreEqual(0, Helpers.CalculatePathDistance(null));
         }

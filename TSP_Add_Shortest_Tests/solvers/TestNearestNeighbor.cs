@@ -21,7 +21,7 @@ namespace TSP_Add_Shortest_Tests.solvers
         }
 
         [TestMethod]
-        public void TestKnownLongRoute()
+        public void Test_Solve_LongRoute()
         {
             var nodes = new List<Node> {
                 new(0, 0),
@@ -38,7 +38,7 @@ namespace TSP_Add_Shortest_Tests.solvers
         }
 
         [TestMethod]
-        public void TestKnownShortRoute()
+        public void Test_Solve_ShortRoute()
         {
             var nodes = new List<Node> {
                 new(0, 0),
@@ -50,7 +50,7 @@ namespace TSP_Add_Shortest_Tests.solvers
 
 
         [TestMethod]
-        public void TestKnownSingleItemRoute()
+        public void Test_Solve_SingleItemRoute()
         {
             var nodes = new List<Node> {
                 new(0, 0),
@@ -60,7 +60,7 @@ namespace TSP_Add_Shortest_Tests.solvers
         }
 
         [TestMethod]
-        public void TestThrowsWhenEmptyNodes()
+        public void Test_Constructor_ThrowsWhenEmptyNodes()
         {
             var exception = Assert.ThrowsException<Exception>(
                 () => new NearestNeighbor([])

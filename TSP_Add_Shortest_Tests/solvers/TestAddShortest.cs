@@ -39,20 +39,20 @@ namespace TSP_Add_Shortest_Tests.solvers
         }
 
         [TestMethod]
-        public void TestGerateEdgesNoNodes()
+        public void Test_GenerateEdges_NoNodes()
         {
             RunGenerateNodesTest([], []);
         }
 
         [TestMethod]
-        public void TestGerateEdgesOneNode()
+        public void Test_GenerateEdges_OneNode()
         {
             var nodes = new List<Node> { new Node(0, 0), };
             RunGenerateNodesTest(nodes, []);
         }
 
         [TestMethod]
-        public void TestGerateEdgesTwoNodes()
+        public void Test_GenerateEdges_TwoNodes()
         {
             var nodes = new List<Node> { a, b, };
             var expectedEdges = new List<Edge>
@@ -63,7 +63,7 @@ namespace TSP_Add_Shortest_Tests.solvers
         }
 
         [TestMethod]
-        public void TestGerateEdgesManyNodes()
+        public void Test_GenerateEdges_ManyNodes()
         {
             var nodes = new List<Node> { a, b, c, d, };
             var expectedEdges = new List<Edge>
@@ -79,13 +79,13 @@ namespace TSP_Add_Shortest_Tests.solvers
         }
 
         [TestMethod]
-        public void TestSortEdgesNoEdges()
+        public void Test_SortEdges_NoEdges()
         {
             RunSortEdgesTest([], []);
         }
 
         [TestMethod]
-        public void TestSortEdgesOneEdge()
+        public void Test_SortEdges_OneEdge()
         {
             var edges = new List<Edge>
             {
@@ -95,7 +95,7 @@ namespace TSP_Add_Shortest_Tests.solvers
         }
 
         [TestMethod]
-        public void TestSortEdgesManyEdges()
+        public void Test_SortEdges_ManyEdges()
         {
             var edges = new List<Edge>
             {
