@@ -33,35 +33,5 @@ namespace TSP_Add_Shortest.solvers
             edges.Sort(static (x, y) => x.distance.CompareTo(y.distance));
             return edges;
         }
-
-        /// <summary>
-        /// Checks if the edge is a valid connection point based on the current conditions.
-        /// </summary>
-        /// <param name="edge">The edge being checked.</param>
-        /// <returns>Boolean denoting if the edge can be connected.</returns>
-        public static bool CanConnect(Edge edge)
-        {
-            if (edge.a.IsFullyConnected())
-            {
-                return false;
-            }
-
-            if (edge.b.IsFullyConnected())
-            {
-                return false;
-            }
-
-            if (edge.a.oppositeEnd == null || edge.b.oppositeEnd == null)
-            {
-                return true;
-            }
-
-            if (edge.a.id == edge.b.oppositeEnd.id)
-            {
-                return false;
-            }
-
-            return true;
-        }
     }
 }

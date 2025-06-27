@@ -1,4 +1,5 @@
 ﻿using TSP_Add_Shortest.objects;
+using TSP_Add_Shortest.solvers;
 
 namespace TSP_Add_Shortest_Tests.objects
 {
@@ -35,6 +36,75 @@ namespace TSP_Add_Shortest_Tests.objects
             Assert.AreEqual(a.id, edge.a.id);
             Assert.AreEqual(b.id, edge.b.id);
             Assert.AreEqual(5, edge.distance);
+        }
+
+        [TestMethod]
+        public void TestCanConnectUnconnectedNodes()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var edge = new Edge(a, b);
+            Assert.IsTrue(edge.CanConnect());
+        }
+
+        [TestMethod]
+        public void TestCanConnectOneNodeOneConnection()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var c = new Node(0, 0);
+            b.Connect(c);
+            var edge = new Edge(a, b);
+            Assert.IsTrue(edge.CanConnect());
+        }
+
+        [TestMethod]
+        public void TestCanConnectTwoNodesOneConnectionEach()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var c = new Node(0, 0);
+            var d = new Node(0, 0);
+            b.Connect(c);
+            a.Connect(d);
+            var edge = new Edge(a, b);
+            Assert.IsTrue(edge.CanConnect());
+        }
+
+        [TestMethod]
+        public void TestCanConnectSecondNodeFullyConnected()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var c = new Node(0, 0);
+            var d = new Node(0, 0);
+            b.Connect(c);
+            b.Connect(d);
+            var edge = new Edge(a, b);
+            Assert.IsFalse(edge.CanConnect());
+        }
+
+        [TestMethod]
+        public void TestCanConnectFirstNodeFullyConnected()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var c = new Node(0, 0);
+            var d = new Node(0, 0);
+            a.Connect(c);
+            a.Connect(d);
+            var edge = new Edge(a, b);
+            Assert.IsFalse(edge.CanConnect());
+        }
+
+        [TestMethod]
+        public void TestCanConnectNodesAlreadyConnected()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            a.Connect(b);
+            var edge = new Edge(a, b);
+            Assert.IsFalse(edge.CanConnect());
         }
     }
 }
