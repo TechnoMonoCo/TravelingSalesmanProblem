@@ -1,5 +1,4 @@
 ﻿using TSP_Add_Shortest.objects;
-using TSP_Add_Shortest.solvers;
 
 namespace TSP_Add_Shortest_Tests.objects
 {
