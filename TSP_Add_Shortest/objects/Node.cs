@@ -30,7 +30,7 @@
         /// Returns true if this node is fully connected.
         /// </summary>
         /// <returns></returns>
-        private bool IsFullyConnected()
+        public bool IsFullyConnected()
         {
             return left != null;
         }

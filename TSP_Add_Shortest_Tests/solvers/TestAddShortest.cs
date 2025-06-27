@@ -118,5 +118,74 @@ namespace TSP_Add_Shortest_Tests.solvers
             
             RunSortEdgesTest(edges, expectedEdges);
         }
+
+        [TestMethod]
+        public void TestCanConnectUnconnectedNodes()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var edge = new Edge(a, b);
+            Assert.IsTrue(AddShortest.CanConnect(edge));
+        }
+
+        [TestMethod]
+        public void TestCanConnectOneNodeOneConnection()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var c = new Node(0, 0);
+            b.Connect(c);
+            var edge = new Edge(a, b);
+            Assert.IsTrue(AddShortest.CanConnect(edge));
+        }
+
+        [TestMethod]
+        public void TestCanConnectTwoNodesOneConnectionEach()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var c = new Node(0, 0);
+            var d = new Node(0, 0);
+            b.Connect(c);
+            a.Connect(d);
+            var edge = new Edge(a, b);
+            Assert.IsTrue(AddShortest.CanConnect(edge));
+        }
+
+        [TestMethod]
+        public void TestCanConnectSecondNodeFullyConnected()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var c = new Node(0, 0);
+            var d = new Node(0, 0);
+            b.Connect(c);
+            b.Connect(d);
+            var edge = new Edge(a, b);
+            Assert.IsFalse(AddShortest.CanConnect(edge));
+        }
+
+        [TestMethod]
+        public void TestCanConnectFirstNodeFullyConnected()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var c = new Node(0, 0);
+            var d = new Node(0, 0);
+            a.Connect(c);
+            a.Connect(d);
+            var edge = new Edge(a, b);
+            Assert.IsFalse(AddShortest.CanConnect(edge));
+        }
+
+        [TestMethod]
+        public void TestCanConnectNodesAlreadyConnected()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            a.Connect(b);
+            var edge = new Edge(a, b);
+            Assert.IsFalse(AddShortest.CanConnect(edge));
+        }
     }
 }
