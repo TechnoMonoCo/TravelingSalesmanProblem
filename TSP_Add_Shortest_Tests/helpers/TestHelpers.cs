@@ -171,6 +171,25 @@ namespace TSP_Add_Shortest_Tests.helpers
         }
 
         [TestMethod]
+        public void Test_ConnectedNodesToPath_TwoPathsReturnsExpected()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var c = new Node(0, 0);
+            var d = new Node(0, 0);
+            var e = new Node(0, 0);
+            a.Connect(b);
+            c.Connect(d);
+            d.Connect(e);
+            e.Connect(c);
+
+            List<Node> expected = [a, b, a,];
+
+            var route = Helpers.ConnectedNodesToPath([a, b, c, d, e,]);
+            AssertNodeOrdersMatch(route, expected);
+        }
+
+        [TestMethod]
         public void Test_ConnectedNodesToPath_TwoConnectedNodesReturnsExpected()
         {
             var a = new Node(0, 0);
