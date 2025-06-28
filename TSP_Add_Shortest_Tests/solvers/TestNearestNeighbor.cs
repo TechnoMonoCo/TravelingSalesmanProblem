@@ -11,6 +11,7 @@ namespace TSP_Add_Shortest_Tests.solvers
         /// generates the expected route.
         /// </summary>
         /// <param name="nodes"></param>
+        /// <param name="expectedOrder"></param>
         private static void RunTest(List<Node> nodes, List<Node> expectedOrder)
         {
             var nearestNeighbor = new NearestNeighbor(nodes);
