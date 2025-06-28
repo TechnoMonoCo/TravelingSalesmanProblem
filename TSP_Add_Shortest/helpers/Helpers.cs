@@ -34,6 +34,7 @@ namespace TSP_Add_Shortest.helpers
         /// <exception cref="Exception">In any case where the route cannot be traversed</exception>
         public static List<Node> ConnectedNodesToPath(List<Node> nodes)
         {
+            // TODO: Determine a way to validate that all nodes are in a single path
             Node? startPoint = null;
             Node? endPoint = null;
 
