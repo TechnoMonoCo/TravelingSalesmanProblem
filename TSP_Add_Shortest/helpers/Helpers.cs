@@ -4,6 +4,11 @@ namespace TSP_Add_Shortest.helpers
 {
     public static class Helpers
     {
+        /// <summary>
+        /// Calculates the total distance of an ordered list of nodes.
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <returns></returns>
         public static double CalculatePathDistance(List<Node> nodes)
         {
             if (nodes == null || nodes.Count == 0)

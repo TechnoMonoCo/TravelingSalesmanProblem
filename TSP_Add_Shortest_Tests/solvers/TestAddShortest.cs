@@ -11,6 +11,11 @@ namespace TSP_Add_Shortest_Tests.solvers
         private readonly Node c = new(3, 4);
         private readonly Node d = new(0, 0);
 
+        /// <summary>
+        /// A helper function to confirm the order of edges matches the expected order.
+        /// </summary>
+        /// <param name="edges"></param>
+        /// <param name="expectedEdges"></param>
         private static void AssertEdgeOrderMatches(List<Edge> edges, List<Edge> expectedEdges)
         {
             Assert.AreEqual(expectedEdges.Count, edges.Count);
@@ -25,6 +30,11 @@ namespace TSP_Add_Shortest_Tests.solvers
             }
         }
 
+        /// <summary>
+        /// A helper function to run a test case for generating nodes.
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="expectedEdges"></param>
         private static void RunGenerateNodesTest(List<Node> nodes, List<Edge> expectedEdges)
         {
             var addShortest = new AddShortest(nodes);
@@ -32,6 +42,11 @@ namespace TSP_Add_Shortest_Tests.solvers
             AssertEdgeOrderMatches(edges, expectedEdges);
         }
 
+        /// <summary>
+        /// A helper function to run a test for sorting edges.
+        /// </summary>
+        /// <param name="edges"></param>
+        /// <param name="expectedEdges"></param>
         private static void RunSortEdgesTest(List<Edge> edges, List<Edge> expectedEdges)
         {
             var result = AddShortest.SortEdges(edges);
