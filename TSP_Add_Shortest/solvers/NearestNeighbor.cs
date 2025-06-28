@@ -17,6 +17,10 @@ namespace TSP_Add_Shortest.solvers
             this.nodes = nodes;
         }
 
+        /// <summary>
+        /// Solves the round-trip of all nodes utilizing Nearest Neighbor algorithm.
+        /// To fetch the resulting path, call .GetPath().
+        /// </summary>
         public void Solve()
         {
             if (traversalOrder.Count != 0)
@@ -66,7 +70,12 @@ namespace TSP_Add_Shortest.solvers
             // Add the final connection point in.
             traversalOrder.Add(nodes[0]);
         }
-
+        
+        /// <summary>
+        /// Returns the ordered list of nodes that .Solve() came up with, if set.
+        /// Otherwise is an empty list.
+        /// </summary>
+        /// <returns>The ordered list of nodes denoting the path taken.</returns>
         public List<Node> GetPath()
         {
             return traversalOrder;
