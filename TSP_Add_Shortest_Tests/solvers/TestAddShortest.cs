@@ -1,4 +1,5 @@
-﻿using TSP_Add_Shortest.objects;
+﻿using TSP_Add_Shortest.helpers;
+using TSP_Add_Shortest.objects;
 using TSP_Add_Shortest.solvers;
 
 namespace TSP_Add_Shortest_Tests.solvers
@@ -10,6 +11,21 @@ namespace TSP_Add_Shortest_Tests.solvers
         private readonly Node b = new(3, 4);
         private readonly Node c = new(3, 4);
         private readonly Node d = new(0, 0);
+
+        /// <summary>
+        /// A helper function to assert that the order of two List<Node> are identical.
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="expectedNodes"></param>
+        private static void AssertNodeOrderMatches(List<Node> nodes, List<Node> expectedNodes)
+        {
+            Assert.AreEqual(expectedNodes.Count, nodes.Count);
+            for (var i = 0; i < nodes.Count; i++)
+            {
+                Assert.AreEqual(expectedNodes[i].id, nodes[i].id);
+            }
+
+        }
 
         /// <summary>
         /// A helper function to confirm the order of edges matches the expected order.
@@ -132,6 +148,43 @@ namespace TSP_Add_Shortest_Tests.solvers
             };
             
             RunSortEdgesTest(edges, expectedEdges);
+        }
+
+        [TestMethod]
+        public void Test_Solve_ReturnsExpectedRouteOnSimpleRoute()
+        {
+            var a = new Node(0, 0);
+            var b = new Node(0, 3);
+            var c = new Node(3, 3);
+            var d = new Node(3, 0);
+            List<Node> nodes = [a, b, c, d];
+            List<Node> expectedPath = [c, b, a, d, c];
+
+            var addShortest = new AddShortest(nodes);
+            addShortest.Solve();
+
+            var path = addShortest.GetPath();
+            AssertNodeOrderMatches(path, expectedPath);
+            Assert.AreEqual(12, Helpers.CalculatePathDistance(path));
+        }
+
+        [TestMethod]
+        public void Test_Solve_ReturnsExpectedRouteOnComplexRoute()
+        {
+            // Comment denotes distance from previous.
+            var a = new Node(0, 0); // 0
+            var b = new Node(0, 3); // 3
+            var c = new Node(3, 7); // 5
+            var d = new Node(3, 13); // 6
+            List<Node> nodes = [a, b, c, d];
+            List<Node> expectedPath = [a, b, c, d, a,];
+
+            var addShortest = new AddShortest(nodes);
+            addShortest.Solve();
+
+            var path = addShortest.GetPath();
+            AssertNodeOrderMatches(path, expectedPath);
+            Assert.AreEqual(27.341664064126334, Helpers.CalculatePathDistance(path));
         }
     }
 }

@@ -1,10 +1,13 @@
-﻿using TSP_Add_Shortest.objects;
+﻿using TSP_Add_Shortest.helpers;
+using TSP_Add_Shortest.objects;
 
 namespace TSP_Add_Shortest.solvers
 {
+    // TODO: Create an interface for AddShortest and NearestNeighbor
     public class AddShortest(List<Node> nodes)
     {
         public readonly List<Node> nodes = nodes;
+        private List<Node> path = [];
 
         /// <summary>
         /// Creates a list of edges from a list of nodes.
@@ -32,6 +35,40 @@ namespace TSP_Add_Shortest.solvers
         {
             edges.Sort(static (x, y) => x.distance.CompareTo(y.distance));
             return edges;
+        }
+
+        /// <summary>
+        /// Solves the round-trip of all nodes utilizing Add Shortest algorithm.
+        /// To fetch the resulting path, call .GetPath().
+        /// </summary>
+        public void Solve()
+        {
+            if (path.Count != 0)
+            {
+                return;
+            }
+
+            var edges = GenerateEdges();
+            var sortedEdges = SortEdges(edges);
+            foreach (var edge in edges)
+            {
+                if (edge.CanConnect())
+                {
+                    edge.a.Connect(edge.b);
+                }
+            }
+
+            path = Helpers.ConnectedNodesToPath(nodes);
+        }
+
+        /// <summary>
+        /// Returns the ordered list of nodes that .Solve() came up with, if set.
+        /// Otherwise is an empty list.
+        /// </summary>
+        /// <returns>The ordered list of nodes denoting the path taken.</returns>
+        public List<Node> GetPath()
+        {
+            return path;
         }
     }
 }

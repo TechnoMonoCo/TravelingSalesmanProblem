@@ -23,17 +23,17 @@
                 return false;
             }
 
-            if (a.oppositeEnd == null || b.oppositeEnd == null)
-            {
-                return true;
-            }
-
-            if (a.id == b.oppositeEnd.id)
+            if (a.oppositeEnd?.id == b.id || b.oppositeEnd?.id == a.id)
             {
                 return false;
             }
 
             return true;
+        }
+
+        public override string ToString()
+        {
+            return $"{a.id} -> {b.id}";
         }
     }
 }
