@@ -76,5 +76,30 @@ namespace TSP_Add_Shortest_Tests.objects
             Assert.IsNotNull(stopwatch.endTime);
             Assert.IsTrue(stopwatch.DurationInMs() >= 0);
         }
+
+        [TestMethod]
+        public void Test_DurationInMs_ThrowsWhenNotStarted()
+        {
+            var stopwatch = new StopWatch();
+            Assert.IsNull(stopwatch.startTime);
+            Assert.IsNull(stopwatch.endTime);
+            var exception = Assert.ThrowsException<Exception>(
+                () => stopwatch.DurationInMs()
+            );
+            Assert.AreEqual("Stopwatch was never started.", exception.Message);
+        }
+
+        [TestMethod]
+        public void Test_DurationInMs_ThrowsWhenNotStopped()
+        {
+            var stopwatch = new StopWatch();
+            stopwatch.Start();
+            Assert.IsNotNull(stopwatch.startTime);
+            Assert.IsNull(stopwatch.endTime);
+            var exception = Assert.ThrowsException<Exception>(
+                () => stopwatch.DurationInMs()
+            );
+            Assert.AreEqual("Stopwatch was never stopped.", exception.Message);
+        }
     }
 }
