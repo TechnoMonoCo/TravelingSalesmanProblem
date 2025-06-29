@@ -3,6 +3,7 @@ using TSP_Add_Shortest.objects;
 
 namespace TSP_Add_Shortest.solvers
 {
+    // TODO: Create an interface for AddShortest and NearestNeighbor
     public class AddShortest(List<Node> nodes)
     {
         public readonly List<Node> nodes = nodes;
