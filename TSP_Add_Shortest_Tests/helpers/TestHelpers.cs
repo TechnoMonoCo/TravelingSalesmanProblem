@@ -237,5 +237,32 @@ namespace TSP_Add_Shortest_Tests.helpers
                 AssertNodeOrdersMatch(route, expectedOptionTwo);
             });
         }
+
+        [TestMethod]
+        public void Test_ConnectedNodesToPath_FourNodesInWeirdOrderReturnsExpected()
+        {
+            // While testing AddShortest's .Solve, the below case was created and
+            // failing because .ConnectedNodesToPath was not functioning correctly.
+            // This edge case was added as a test to ensure regression does not
+            // happen in the future.
+
+            var a = new Node(0, 0);
+            var b = new Node(0, 3);
+            var c = new Node(3, 3);
+            var d = new Node(3, 0);
+            List<Node> nodes = [a, b, c, d];
+            List<Node> expectedPath = [c, b, a, d, c,];
+
+            a.Connect(b);
+            a.Connect(d);
+            b.Connect(c);
+
+            var path = Helpers.ConnectedNodesToPath(nodes);
+            Assert.AreEqual(expectedPath.Count, path.Count);
+            for(var i = 0; i < path.Count; i++)
+            {
+                Assert.AreEqual(expectedPath[i].id, path[i].id);
+            }
+        }
     }
 }

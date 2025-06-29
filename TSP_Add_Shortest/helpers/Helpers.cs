@@ -38,18 +38,22 @@ namespace TSP_Add_Shortest.helpers
             Node? startPoint = null;
             Node? endPoint = null;
 
+            // Find the endpoints and set them.
             foreach(var node in nodes)
             {
+                // If a node is fully connected it is not the endpoint.
                 if (node.IsFullyConnected())
                 {
                     continue;
                 }
 
+                // If a node is fully disconnected we cannot generate the path.
                 if (node.left == null && node.right == null)
                 {
                     throw new Exception("Expected all nodes provided to be connected but weren't.");
                 }
 
+                // At this point we know that only one end is disconnected, so it has to be an endpoint.
                 if (startPoint == null)
                 {
                     startPoint = node;
@@ -76,31 +80,28 @@ namespace TSP_Add_Shortest.helpers
 
             int previousId = startPoint.id;
             var path = new List<Node> { startPoint };
-            var root = startPoint.right != null ? startPoint.right : startPoint.left;
+            // We always connect the right side first, so this is safe.
+            var root = startPoint.right;
             while (root.id != endPoint.id) {
                 path.Add(root);
                 var currentId = root.id;
 
-                // While the right and left of the root shouldn't be null,
-                // double check them just to be safe.
-                if (root.right != null && root.right.id != previousId)
+                // Node.right will never be null in a connected group because we always
+                // connect the right side first. We null cooalese regardless to prevent
+                // editor warnings.
+                if (root.right?.id != previousId)
                 {
                     root = root.right;
                 }
-                if (root.left != null && root.left.id != previousId)
+                else
                 {
                     root = root.left;
                 }
 
-                // This should not be possible, would require you to be looped on self.
-                if (root.id == currentId)
-                {
-                    throw new Exception("Stuck on a node and cannot traverse path.");
-                }
                 previousId = currentId;
             }
             path.Add(root);
-            path.Add(path[0]);
+            path.Add(startPoint);
             return path;
         }
     }
