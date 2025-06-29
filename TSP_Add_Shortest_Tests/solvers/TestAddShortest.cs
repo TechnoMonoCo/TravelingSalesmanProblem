@@ -13,6 +13,11 @@ namespace TSP_Add_Shortest_Tests.solvers
         private readonly Node c = new(3, 4);
         private readonly Node d = new(0, 0);
 
+        /// <summary>
+        /// A helper function to assert that the order of two List<Node> are identical.
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="expectedNodes"></param>
         private static void AssertNodeOrderMatches(List<Node> nodes, List<Node> expectedNodes)
         {
             Assert.AreEqual(expectedNodes.Count, nodes.Count);
