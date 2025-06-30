@@ -259,10 +259,11 @@ namespace TSP_Add_Shortest_Tests.helpers
 
             var path = Helpers.ConnectedNodesToPath(nodes);
             Assert.AreEqual(expectedPath.Count, path.Count);
-            for(var i = 0; i < path.Count; i++)
+            for (var i = 0; i < path.Count; i++)
             {
                 Assert.AreEqual(expectedPath[i].id, path[i].id);
             }
         }
     }
 }
+

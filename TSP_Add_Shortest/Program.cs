@@ -3,6 +3,10 @@ using TSP_Add_Shortest.objects;
 
 Console.WriteLine("Hello, World!");
 
-var runner = new Runner(4, 10);
-runner.Run();
-runner.Stats();
+for (var i = 4; i < 10000; i++)
+{
+    Console.WriteLine($"\n\n\nSTARTING RUN WITH {i} NODES");
+    var runner = new Runner(i, 100, false);
+    runner.Run();
+    runner.Stats();
+}

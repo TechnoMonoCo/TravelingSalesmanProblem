@@ -3,7 +3,7 @@ using TSP_Add_Shortest.solvers;
 
 namespace TSP_Add_Shortest.objects
 {
-    public class Runner(int nodeCount, int runs)
+    public class Runner(int nodeCount, int runs, bool shouldPrint)
     {
         private static readonly Random rng = new();
         private const double _scale = 100;
@@ -13,19 +13,31 @@ namespace TSP_Add_Shortest.objects
         public int nnWins { get; private set; } = 0;
         public int asWins { get; private set; } = 0;
         public int ties { get; private set; } = 0;
+        private readonly bool shouldPrint = shouldPrint;
 
-        public int nnTotalDuration { get; private set; } = 0;
-        public int asTotalDuration { get; private set; } = 0;
+        // Start these at 1 to prevent DIV0.
+        // Since these are in MS, it should be negligable differences.
+        public int nnTotalDuration { get; private set; } = 1;
+        public int asTotalDuration { get; private set; } = 1;
         public double nnTotalDistance { get; private set; } = 0;
         public double asTotalDistance { get; private set; } = 0;
+
+        private void Print(string message)
+        {
+            if (!shouldPrint)
+            {
+                return;
+            }
+            Console.WriteLine(message);
+        }
 
         public void Run()
         {
             var stopwatch = new StopWatch();
             for(var i = 0; i < runs; i++)
             {
-                Console.WriteLine($"Run {i + 1} of {runs}...");
-                Console.WriteLine("Generating nodes...");
+                Print($"Run {i + 1} of {runs}...");
+                Print("Generating nodes...");
                 var nnNodes = new List<Node>();
                 var asNodes = new List<Node>();
                 for(var j = 0; j < nodeCount; j++)
@@ -37,7 +49,8 @@ namespace TSP_Add_Shortest.objects
                     asNodes.Add(new Node(x, y));
                 }
 
-                Console.WriteLine("Starting NN run.");
+                // TODO: Once NN and AS are interfaced, extract to a helper.
+                Print("Starting NN run.");
                 var nn = new NearestNeighbor(nnNodes);
                 stopwatch.Start();
                 nn.Solve();
@@ -45,9 +58,9 @@ namespace TSP_Add_Shortest.objects
                 var nnDuration = stopwatch.DurationInMs();
                 nnTotalDuration += nnDuration;
                 stopwatch.Reset();
-                Console.WriteLine($"NN completed in {nnDuration}ms");
+                Print($"NN completed in {nnDuration}ms");
 
-                Console.WriteLine("Starting AS run.");
+                Print("Starting AS run.");
                 var addShort = new AddShortest(asNodes);
                 stopwatch.Start();
                 addShort.Solve();
@@ -55,25 +68,39 @@ namespace TSP_Add_Shortest.objects
                 var asDuration = stopwatch.DurationInMs();
                 asTotalDuration += asDuration;
                 stopwatch.Reset();
-                Console.WriteLine($"AS completed in {asDuration}ms");
+                Print($"AS completed in {asDuration}ms");
 
-                Console.WriteLine($"Calculating distances...");
-                var nnDistance = Helpers.CalculatePathDistance(nn.GetPath());
+                Print($"Calculating distances...");
+                var nnPath = nn.GetPath();
+                var asPath = addShort.GetPath();
+
+                if (nnPath.Count != nodeCount + 1)
+                {
+                    throw new Exception("Invalid NN Path");
+                }
+                if (asPath.Count != nodeCount + 1)
+                {
+                    throw new Exception("Invalid AS Path");
+                }
+
+                var nnDistance = Helpers.CalculatePathDistance(nnPath);
                 nnTotalDistance += nnDistance;
-                var asDistance = Helpers.CalculatePathDistance(addShort.GetPath());
-                asTotalDistance += asTotalDistance;
+                var asDistance = Helpers.CalculatePathDistance(asPath);
+                asTotalDistance += asDistance;
 
                 if (nnDistance < asDistance)
                 {
-                    Console.WriteLine($"NN was shorter by {asDistance - nnDistance}");
+                    Print($"NN was shorter by {asDistance - nnDistance}");
                     nnWins++;
-                } else if (nnDistance > asDistance)
+                }
+                else if (nnDistance > asDistance)
                 {
-                    Console.WriteLine($"AS was shorter by {nnDistance - asDistance}");
+                    Print($"AS was shorter by {nnDistance - asDistance}");
                     asWins++;
-                } else
+                }
+                else
                 {
-                    Console.WriteLine("It's a tie!");
+                    Print("It's a tie!");
                     ties++;
                 }
             }
@@ -81,6 +108,18 @@ namespace TSP_Add_Shortest.objects
 
         public void Stats()
         {
+            Console.WriteLine("------");
+            Console.WriteLine($"AS Total Distance: {asTotalDistance}");
+            Console.WriteLine($"AS Total Time: {asTotalDuration}ms");
+            Console.WriteLine($"AS Wins: {asWins}");
+            Console.WriteLine("---");
+            Console.WriteLine($"NN Total Distance: {nnTotalDistance}");
+            Console.WriteLine($"NN Total Time: {nnTotalDuration}ms");
+            Console.WriteLine($"NN Wins: {nnWins}");
+            Console.WriteLine("---");
+            Console.WriteLine($"Ties: {ties}");
+            Console.WriteLine("---");
+
             // AS wins by number of wins OR tie breaker of shorter total distance.
             if (asWins > nnWins || (asWins == nnWins) && asTotalDistance < nnTotalDistance)
             {

@@ -71,10 +71,11 @@ namespace TSP_Add_Shortest_Tests.objects
         {
             var stopwatch = new StopWatch();
             stopwatch.Start();
+            Thread.Sleep(7000);
             stopwatch.Stop();
             Assert.IsNotNull(stopwatch.startTime);
             Assert.IsNotNull(stopwatch.endTime);
-            Assert.IsTrue(stopwatch.DurationInMs() >= 0);
+            Assert.IsTrue(stopwatch.DurationInMs() >= 7000);
         }
 
         [TestMethod]

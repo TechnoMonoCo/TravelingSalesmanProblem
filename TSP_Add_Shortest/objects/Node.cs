@@ -92,7 +92,7 @@
             else
             {
                 oppositeEnd = node.oppositeEnd;
-                node.oppositeEnd = this;
+                node.oppositeEnd.oppositeEnd = this;
             }
         }
 

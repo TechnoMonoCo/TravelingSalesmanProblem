@@ -117,5 +117,25 @@ namespace TSP_Add_Shortest_Tests.objects
             var edge = new Edge(a, c);
             Assert.IsFalse(edge.CanConnect());
         }
+
+        [TestMethod]
+        public void Test_CanConnect_RunnerEdgeCase()
+        {
+            // While implementing the runner, an edge case was detected that was
+            // allowing connections that should have been allowed. This case is
+            // added as a regression test.
+
+            var a = new Node(0, 0);
+            var b = new Node(0, 0);
+            var c = new Node(0, 0);
+            var d = new Node(0, 0);
+            b.Connect(d);
+            c.Connect(d);
+            a.Connect(b);
+
+            // a - b - d - c is the current setup.
+            var edge = new Edge(a, c);
+            Assert.IsFalse(edge.CanConnect());
+        }
     }
 }
