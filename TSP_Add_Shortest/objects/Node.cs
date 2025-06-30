@@ -98,7 +98,7 @@
 
         public override string ToString()
         {
-            return $"{id}:\nLEFT:{left?.id}\nRIGHT:{right?.id}\nOPP ID:{oppositeEnd?.id}\nOPP OPP ID: {oppositeEnd?.oppositeEnd?.id}";
+            return $"{id}: \nLEFT:{left?.id} \nRIGHT:{right?.id} \nOPP ID:{oppositeEnd?.id} \nOPP OPP ID: {oppositeEnd?.oppositeEnd?.id}";
         }
     }
 }
