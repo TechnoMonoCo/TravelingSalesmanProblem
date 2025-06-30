@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using TSP_Add_Shortest.helpers;
+﻿using TSP_Add_Shortest.helpers;
 using TSP_Add_Shortest.solvers;
 
 namespace TSP_Add_Shortest.objects
@@ -15,8 +14,8 @@ namespace TSP_Add_Shortest.objects
 
         // Start these at 1 to prevent DIV0.
         // Since these are in MS, it should be negligable differences.
-        public int nnTotalDuration { get; private set; } = 1;
-        public int asTotalDuration { get; private set; } = 1;
+        public double nnTotalDuration { get; private set; } = 1;
+        public double asTotalDuration { get; private set; } = 1;
         public double nnTotalDistance { get; private set; } = 0;
         public double asTotalDistance { get; private set; } = 0;
 
@@ -137,7 +136,8 @@ namespace TSP_Add_Shortest.objects
             {
                 Console.WriteLine($"It's a tie!");
             }
-            Console.WriteLine($"AS ran {100.0 * (asTotalDuration - nnTotalDuration) / nnTotalDuration}% longer than NN on average.");
+            // NOTE: This number is misleading when the node count is smaller due to NN running in <1 ms most of the time.
+            Console.WriteLine($"AS ran {(asTotalDuration - nnTotalDuration) / nnTotalDuration}x longer than NN on average.");
         }
     }
 }
