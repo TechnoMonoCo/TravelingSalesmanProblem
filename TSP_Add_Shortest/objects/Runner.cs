@@ -9,18 +9,19 @@ namespace TSP_Add_Shortest.objects
         private const double _scale = 100;
         private readonly int nodeCount = nodeCount;
         private readonly int runs = runs;
+        private readonly bool shouldPrint = shouldPrint;
+        private readonly StopWatch stopWatch = new StopWatch();
+
+        // Start these at 1 to prevent DIV0.
+        // Since these are in MS, it should be negligable differences.
+        public double nnTotalDuration { get; private set; } = 1;
+        public double asTotalDuration { get; private set; } = 1;
+        public double nnTotalDistance { get; private set; } = 0;
+        public double asTotalDistance { get; private set; } = 0;
 
         public int nnWins { get; private set; } = 0;
         public int asWins { get; private set; } = 0;
         public int ties { get; private set; } = 0;
-        private readonly bool shouldPrint = shouldPrint;
-
-        // Start these at 1 to prevent DIV0.
-        // Since these are in MS, it should be negligable differences.
-        public int nnTotalDuration { get; private set; } = 1;
-        public int asTotalDuration { get; private set; } = 1;
-        public double nnTotalDistance { get; private set; } = 0;
-        public double asTotalDistance { get; private set; } = 0;
 
         private void Print(string message)
         {
@@ -31,9 +32,19 @@ namespace TSP_Add_Shortest.objects
             Console.WriteLine(message);
         }
 
+        private void Execute(ISolver solver, string solverName)
+        {
+            stopWatch.Reset();
+            Print($"Starting {solverName} run.");
+            stopWatch.Start();
+            solver.Solve();
+            stopWatch.Stop();
+            var duration = stopWatch.DurationInMs();
+            Print($"{solverName} completed in {duration}ms");
+        }
+
         public void Run()
         {
-            var stopwatch = new StopWatch();
             for(var i = 0; i < runs; i++)
             {
                 Print($"Run {i + 1} of {runs}...");
@@ -49,26 +60,15 @@ namespace TSP_Add_Shortest.objects
                     asNodes.Add(new Node(x, y));
                 }
 
-                // TODO: Once NN and AS are interfaced, extract to a helper.
-                Print("Starting NN run.");
                 var nn = new NearestNeighbor(nnNodes);
-                stopwatch.Start();
-                nn.Solve();
-                stopwatch.Stop();
-                var nnDuration = stopwatch.DurationInMs();
+                Execute(nn, "NN");
+                var nnDuration = stopWatch.DurationInMs();
                 nnTotalDuration += nnDuration;
-                stopwatch.Reset();
-                Print($"NN completed in {nnDuration}ms");
 
-                Print("Starting AS run.");
                 var addShort = new AddShortest(asNodes);
-                stopwatch.Start();
-                addShort.Solve();
-                stopwatch.Stop();
-                var asDuration = stopwatch.DurationInMs();
+                Execute(addShort, "AS");
+                var asDuration = stopWatch.DurationInMs();
                 asTotalDuration += asDuration;
-                stopwatch.Reset();
-                Print($"AS completed in {asDuration}ms");
 
                 Print($"Calculating distances...");
                 var nnPath = nn.GetPath();
@@ -136,7 +136,8 @@ namespace TSP_Add_Shortest.objects
             {
                 Console.WriteLine($"It's a tie!");
             }
-            Console.WriteLine($"AS ran {100.0 * (asTotalDuration - nnTotalDuration) / nnTotalDuration}% longer than NN on average.");
+            // NOTE: This number is misleading when the node count is smaller due to NN running in <1 ms most of the time.
+            Console.WriteLine($"AS ran {(asTotalDuration - nnTotalDuration) / nnTotalDuration}x longer than NN on average.");
         }
     }
 }

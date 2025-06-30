@@ -70,12 +70,6 @@ namespace TSP_Add_Shortest_Tests.solvers
         }
 
         [TestMethod]
-        public void Test_GenerateEdges_NoNodes()
-        {
-            RunGenerateNodesTest([], []);
-        }
-
-        [TestMethod]
         public void Test_GenerateEdges_OneNode()
         {
             var nodes = new List<Node> { new Node(0, 0), };
@@ -185,6 +179,16 @@ namespace TSP_Add_Shortest_Tests.solvers
             var path = addShortest.GetPath();
             AssertNodeOrderMatches(path, expectedPath);
             Assert.AreEqual(27.341664064126334, Helpers.CalculatePathDistance(path));
+        }
+
+        [TestMethod]
+        public void Test_Constructor_ThrowsWhenProvidedEmptyList()
+        {
+            var exception = Assert.ThrowsException<Exception>(
+                () => { new AddShortest([]); }
+            );
+
+            Assert.AreEqual("Nodes must be a non-empty list.", exception.Message);
         }
     }
 }

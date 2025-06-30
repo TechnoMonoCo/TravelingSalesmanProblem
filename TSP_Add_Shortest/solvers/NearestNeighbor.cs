@@ -2,10 +2,9 @@
 
 namespace TSP_Add_Shortest.solvers
 {
-    // TODO: Create an interface for AddShortest and NearestNeighbor
-    public class NearestNeighbor
+    public class NearestNeighbor : ISolver
     {
-        public readonly List<Node> nodes;
+        private readonly List<Node> nodes;
         private readonly List<Node> traversalOrder = [];
 
         public NearestNeighbor(List<Node> nodes)

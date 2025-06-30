@@ -3,11 +3,20 @@ using TSP_Add_Shortest.objects;
 
 namespace TSP_Add_Shortest.solvers
 {
-    // TODO: Create an interface for AddShortest and NearestNeighbor
-    public class AddShortest(List<Node> nodes)
+    public class AddShortest : ISolver
     {
-        public readonly List<Node> nodes = nodes;
+        public readonly List<Node> nodes;
         private List<Node> path = [];
+
+        public AddShortest(List<Node> nodes)
+        {
+            if (nodes.Count == 0)
+            {
+                throw new Exception("Nodes must be a non-empty list.");
+            }
+
+            this.nodes = nodes;
+        }
 
         /// <summary>
         /// Creates a list of edges from a list of nodes.
