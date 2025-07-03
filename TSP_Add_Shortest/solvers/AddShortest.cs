@@ -58,7 +58,7 @@ namespace TSP_Add_Shortest.solvers
             }
 
             var edges = GenerateEdges();
-            var sortedEdges = SortEdges(edges);
+            _ = SortEdges(edges);
             foreach (var edge in edges)
             {
                 if (edge.CanConnect())

@@ -32,7 +32,7 @@
         /// <returns></returns>
         public bool IsFullyConnected()
         {
-            return left != null;
+            return right != null && left != null;
         }
 
         /// <summary>
