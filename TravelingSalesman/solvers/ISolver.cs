@@ -1,6 +1,6 @@
-﻿using TSP_Add_Shortest.objects;
+﻿using TravelingSalesman.objects;
 
-namespace TSP_Add_Shortest.solvers
+namespace TravelingSalesman.solvers
 {
     internal interface ISolver
     {

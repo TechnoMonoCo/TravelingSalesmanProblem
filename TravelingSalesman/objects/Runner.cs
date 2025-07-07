@@ -1,7 +1,7 @@
-﻿using TSP_Add_Shortest.helpers;
-using TSP_Add_Shortest.solvers;
+﻿using TravelingSalesman.helpers;
+using TravelingSalesman.solvers;
 
-namespace TSP_Add_Shortest.objects
+namespace TravelingSalesman.objects
 {
     public class Runner(int nodeCount, int runs, bool shouldPrint)
     {

@@ -1,6 +1,6 @@
-﻿using TSP_Add_Shortest.objects;
+﻿using TravelingSalesman.objects;
 
-namespace TSP_Add_Shortest_Tests.objects
+namespace TravelingSalesmanTests.objects
 {
     [TestClass]
     public class TestStopWatch

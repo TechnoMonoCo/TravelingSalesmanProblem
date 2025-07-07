@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using TSP_Add_Shortest.objects;
+using TravelingSalesman.objects;
 
 Console.WriteLine("Hello, World!");
 

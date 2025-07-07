@@ -1,4 +1,4 @@
-﻿namespace TSP_Add_Shortest.objects
+﻿namespace TravelingSalesman.objects
 {
     public class StopWatch
     {
