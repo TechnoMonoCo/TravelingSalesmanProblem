@@ -1,7 +1,7 @@
-﻿using TSP_Add_Shortest.objects;
-using TSP_Add_Shortest.solvers;
+﻿using TravelingSalesman.objects;
+using TravelingSalesman.solvers;
 
-namespace TSP_Add_Shortest_Tests.solvers
+namespace TravelingSalesmanTests.solvers
 {
     [TestClass]
     public class TestNearestNeighbor

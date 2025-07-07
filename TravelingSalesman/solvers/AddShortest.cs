@@ -1,7 +1,7 @@
-﻿using TSP_Add_Shortest.helpers;
-using TSP_Add_Shortest.objects;
+﻿using TravelingSalesman.helpers;
+using TravelingSalesman.objects;
 
-namespace TSP_Add_Shortest.solvers
+namespace TravelingSalesman.solvers
 {
     public class AddShortest : ISolver
     {

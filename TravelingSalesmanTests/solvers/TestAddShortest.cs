@@ -1,8 +1,8 @@
-﻿using TSP_Add_Shortest.helpers;
-using TSP_Add_Shortest.objects;
-using TSP_Add_Shortest.solvers;
+﻿using TravelingSalesman.helpers;
+using TravelingSalesman.objects;
+using TravelingSalesman.solvers;
 
-namespace TSP_Add_Shortest_Tests.solvers
+namespace TravelingSalesmanTests.solvers
 {
     [TestClass]
     public class TestAddShortest

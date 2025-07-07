@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TSP_Add_Shortest\TSP_Add_Shortest.csproj" />
+    <ProjectReference Include="..\TravelingSalesman\TravelingSalesman.csproj" />
+    <ProjectReference Include="..\TSP_Add_Shortest\TravelingSalesman.csproj" />
   </ItemGroup>
 
   <ItemGroup>

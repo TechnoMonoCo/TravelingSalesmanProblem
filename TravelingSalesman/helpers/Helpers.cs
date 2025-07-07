@@ -1,6 +1,6 @@
-﻿using TSP_Add_Shortest.objects;
+﻿using TravelingSalesman.objects;
 
-namespace TSP_Add_Shortest.helpers
+namespace TravelingSalesman.helpers
 {
     public static class Helpers
     {
