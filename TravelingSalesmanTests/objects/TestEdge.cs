@@ -137,5 +137,11 @@ namespace TravelingSalesmanTests.objects
             var edge = new Edge(a, c);
             Assert.IsFalse(edge.CanConnect());
         }
+
+        [TestMethod]
+        public void Test_DeleteMe()
+        {
+            Assert.Fail();
+        }
     }
 }
