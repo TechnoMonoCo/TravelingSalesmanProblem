@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TravelingSalesman\TravelingSalesman.csproj" />
-    <ProjectReference Include="..\TSP_Add_Shortest\TravelingSalesman.csproj" />
   </ItemGroup>
 
   <ItemGroup>
