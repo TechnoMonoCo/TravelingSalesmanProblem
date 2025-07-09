@@ -6,7 +6,7 @@ namespace TravelingSalesmanTests.objects
     public class TestWeightedNode
     {
         [TestMethod]
-        public void Test_GetAndSetWorkAsExpected()
+        public void Test_GetAndSet_WorkAsExpected()
         {
             var weightedNode = new WeightedNode(1, 2);
             Assert.AreEqual(0, weightedNode.Weight);
