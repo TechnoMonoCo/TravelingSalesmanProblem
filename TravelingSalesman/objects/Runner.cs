@@ -12,15 +12,21 @@ namespace TravelingSalesman.objects
         private readonly bool shouldPrint = shouldPrint;
         private readonly StopWatch stopWatch = new StopWatch();
 
+        // TODO: Add a better way to compare WNN to NN and AS to NN.
+
         // Start these at 1 to prevent DIV0.
         // Since these are in MS, it should be negligable differences.
         public double nnTotalDuration { get; private set; } = 1;
         public double asTotalDuration { get; private set; } = 1;
+        public double wnnTotalDuration { get; private set; } = 1;
+
         public double nnTotalDistance { get; private set; } = 0;
         public double asTotalDistance { get; private set; } = 0;
+        public double wnnTotalDistance { get; private set; } = 0;
 
         public int nnWins { get; private set; } = 0;
         public int asWins { get; private set; } = 0;
+        public int wnnWins { get; private set; } = 0;
         public int ties { get; private set; } = 0;
 
         private void Print(string message)
@@ -51,13 +57,15 @@ namespace TravelingSalesman.objects
                 Print("Generating nodes...");
                 var nnNodes = new List<Node>();
                 var asNodes = new List<Node>();
-                for(var j = 0; j < nodeCount; j++)
+                var wnnNodes = new List<WeightedNode>();
+                for (var j = 0; j < nodeCount; j++)
                 {
                     var x = rng.NextDouble() * _scale;
                     var y = rng.NextDouble() * _scale;
 
                     nnNodes.Add(new Node(x, y));
                     asNodes.Add(new Node(x, y));
+                    wnnNodes.Add(new WeightedNode(x, y));
                 }
 
                 var nn = new NearestNeighbor(nnNodes);
@@ -70,9 +78,15 @@ namespace TravelingSalesman.objects
                 var asDuration = stopWatch.DurationInMs();
                 asTotalDuration += asDuration;
 
+                var wnn = new WeightedNearestNeighbor(wnnNodes);
+                Execute(wnn, "WNN");
+                var wnnDuration = stopWatch.DurationInMs();
+                wnnTotalDuration += wnnDuration;
+
                 Print($"Calculating distances...");
                 var nnPath = nn.GetPath();
                 var asPath = addShort.GetPath();
+                var wnnPath = wnn.GetPath();
 
                 if (nnPath.Count != nodeCount + 1)
                 {
@@ -82,25 +96,37 @@ namespace TravelingSalesman.objects
                 {
                     throw new Exception("Invalid AS Path");
                 }
+                if (wnnPath.Count != nodeCount + 1)
+                {
+                    throw new Exception("Invalid WNN Path");
+                }
 
                 var nnDistance = Helpers.CalculatePathDistance(nnPath);
                 nnTotalDistance += nnDistance;
                 var asDistance = Helpers.CalculatePathDistance(asPath);
                 asTotalDistance += asDistance;
+                var wnnDistance = Helpers.CalculatePathDistance(wnnPath);
+                wnnTotalDistance += wnnDistance;
 
-                if (nnDistance < asDistance)
+                if (nnDistance < asDistance && nnDistance < wnnDistance)
                 {
-                    Print($"NN was shorter by {asDistance - nnDistance}");
+                    Print("NN was shortest!");
                     nnWins++;
                 }
-                else if (nnDistance > asDistance)
+                else if (asDistance < nnDistance && asDistance < wnnDistance)
                 {
-                    Print($"AS was shorter by {nnDistance - asDistance}");
+                    Print("AS was shortest!");
                     asWins++;
                 }
+                else if (wnnDistance < asDistance && wnnDistance < nnDistance)
+                {
+                    Print("WNN was shortest!");
+                    asWins++;
+                }
+                // TODO: WNN-NN, WNN-AS, NN-AS, and 3-way ties to differentiate?
                 else
                 {
-                    Print("It's a tie!");
+                    Print("Two or more algs tied!");
                     ties++;
                 }
             }
@@ -108,6 +134,10 @@ namespace TravelingSalesman.objects
 
         public void Stats()
         {
+            Console.WriteLine("---");
+            Console.WriteLine($"WNN Total Distance: {wnnTotalDistance}");
+            Console.WriteLine($"WNN Total Time: {wnnTotalDuration}ms");
+            Console.WriteLine($"WNN Wins: {wnnWins}");
             Console.WriteLine("------");
             Console.WriteLine($"AS Total Distance: {asTotalDistance}");
             Console.WriteLine($"AS Total Time: {asTotalDuration}ms");
@@ -120,24 +150,9 @@ namespace TravelingSalesman.objects
             Console.WriteLine($"Ties: {ties}");
             Console.WriteLine("---");
 
-            // AS wins by number of wins OR tie breaker of shorter total distance.
-            if (asWins > nnWins || (asWins == nnWins) && asTotalDistance < nnTotalDistance)
-            {
-                Console.WriteLine($"AS won with {100.0 * asWins / (double)runs}%");
-                Console.WriteLine($"AS had {100.0 * (1 - (asTotalDistance / nnTotalDistance))}% shorter routes on average.");
-            } else
-            // NN wins by number of wins OR tie breaker of shorter total distance.
-            if (asWins < nnWins || (asWins == nnWins) && asTotalDistance > nnTotalDistance)
-            {
-                Console.WriteLine($"NN won with {100.0 * nnWins / (double)runs}%");
-                Console.WriteLine($"NN had {100.0 * (1 - (nnTotalDistance / asTotalDistance))}% shorter routes on average.");
-            } else
-            // It's just a tie... Very unlikely unless very few nodes.
-            {
-                Console.WriteLine($"It's a tie!");
-            }
+            // TODO: Write the below to be a better representation of data to include WNN as well.
             // NOTE: This number is misleading when the node count is smaller due to NN running in <1 ms most of the time.
-            Console.WriteLine($"AS ran {(asTotalDuration - nnTotalDuration) / nnTotalDuration}x longer than NN on average.");
+            //Console.WriteLine($"AS ran {(asTotalDuration - nnTotalDuration) / nnTotalDuration}x longer than NN on average.");
         }
     }
 }
