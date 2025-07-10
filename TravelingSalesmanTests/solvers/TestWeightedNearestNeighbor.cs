@@ -7,24 +7,6 @@ namespace TravelingSalesmanTests.solvers
     public class TestWeightedNearestNeighbor
     {
         [TestMethod]
-        public void Test_GetPath_Throws()
-        {
-            var weightedNearestNeighbor = new WeightedNearestNeighbor([]);
-            Assert.ThrowsException<NotImplementedException>(
-                () => weightedNearestNeighbor.GetPath()
-            );
-        }
-
-        [TestMethod]
-        public void Test_Solve_Throws()
-        {
-            var weightedNearestNeighbor = new WeightedNearestNeighbor([]);
-            Assert.ThrowsException<NotImplementedException>(
-                () => weightedNearestNeighbor.GetPath()
-            );
-        }
-
-        [TestMethod]
         public void Test_SetWeights_ReturnsEmptyListWhenProvidedEmptyList()
         {
             Assert.AreEqual(0, WeightedNearestNeighbor.SetWeights([]).Count);
@@ -52,6 +34,36 @@ namespace TravelingSalesmanTests.solvers
             {
                 Assert.AreEqual(6.82842712474619, node.Weight);
             });
+        }
+
+        [TestMethod]
+        public void Test_Solve_BasicPathCreatedExpectedPath()
+        {
+            var a = new WeightedNode(0, 0);
+            // Central node would have least distance between all; will be start point.
+            var b = new WeightedNode(1, 1);
+            var c = new WeightedNode(2, 2);
+            var d = new WeightedNode(0, 2);
+            var e = new WeightedNode(2, 0);
+            var expectedOrder = new List<WeightedNode> { b, a, d, c, e, b, };
+
+            var weightedNearestNeighbor = new WeightedNearestNeighbor([a, b, c, d, e]);
+            weightedNearestNeighbor.Solve();
+            var path = weightedNearestNeighbor.GetPath();
+
+            Assert.AreEqual(6, path.Count);
+            for (var i = 0; i < expectedOrder.Count; i++)
+            {
+                Assert.AreEqual(expectedOrder[i].id, path[i].id);
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetPath_ReturnsEmptyListWhenSolveNotCalled()
+        {
+            var a = new WeightedNode(0, 0);
+            var weightedNearestNeighbor = new WeightedNearestNeighbor([a]);
+            Assert.AreEqual(0, weightedNearestNeighbor.GetPath().Count);
         }
     }
 }
