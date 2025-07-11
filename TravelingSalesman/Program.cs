@@ -17,24 +17,24 @@ double wnnDistance = 0;
 
 var ties = 0;
 
-for (var i = 100; i <= 1000; i += 100)
+for (var i = 10; i <= 1000; i += 10)
 {
     Console.WriteLine($"\n\n\nSTARTING RUN WITH {i} NODES");
-    var runner = new Runner(i, 10, false);
+    var runner = new Runner(i, 100, false);
     runner.Run();
     runner.Stats();
 
+    nnWins += runner.nnWins;
     nnTime += runner.nnTotalDuration;
     nnDistance += runner.nnTotalDistance;
-    nnWins += runner.nnWins;
 
+    asWins += runner.asWins;
     asTime += runner.asTotalDuration;
     asDistance += runner.asTotalDistance;
-    asWins += runner.asWins;
 
+    wnnWins += runner.wnnWins;
     wnnTime += runner.wnnTotalDuration;
     wnnDistance += runner.wnnTotalDistance;
-    wnnWins += runner.wnnWins;
 
     ties += runner.ties;
 }
@@ -43,6 +43,6 @@ var runs = asWins + nnWins + ties;
 
 Console.WriteLine("\n\n\n\n\nFINAL STATS!\n---------");
 Console.WriteLine($"NN:\nWINS:{nnWins} ({100.0 * nnWins / runs}%)\nTIME: {nnTime}ms\nDIST: {nnDistance}\n");
-Console.WriteLine($"AS:\nWINS:{asWins} ({100.0 * asWins / runs}%)\nTIME: {asTime}ms\nDIST: {asDistance}"\n);
+Console.WriteLine($"AS:\nWINS:{asWins} ({100.0 * asWins / runs}%)\nTIME: {asTime}ms\nDIST: {asDistance}\n");
 Console.WriteLine($"WNN:\nWINS:{wnnWins} ({100.0 * wnnWins / runs}%)\nTIME: {wnnTime}ms\nDIST: {wnnDistance}\n");
 Console.WriteLine($"Ties: {ties} ({100.0 * ties / runs}%)");

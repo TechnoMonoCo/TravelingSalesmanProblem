@@ -40,6 +40,33 @@ namespace TravelingSalesmanTests.objects
         }
 
         [TestMethod]
+        public void Test_Winner_ReturnsExpectedWhenFirstSolverHasMoreWins()
+        {
+            var comparer = new TwoSolverStatisticComparer(SolverType.AddShortest, SolverType.NearestNeighbor);
+            AddWins(comparer, SolverType.AddShortest, 15);
+            AddWins(comparer, SolverType.NearestNeighbor, 12);
+            Assert.AreEqual(SolverType.AddShortest.ToString(), comparer.Winner());
+        }
+
+        [TestMethod]
+        public void Test_Winner_ReturnsExpectedWhenSecondSolverHasMoreWins()
+        {
+            var comparer = new TwoSolverStatisticComparer(SolverType.AddShortest, SolverType.NearestNeighbor);
+            AddWins(comparer, SolverType.AddShortest, 15);
+            AddWins(comparer, SolverType.NearestNeighbor, 72);
+            Assert.AreEqual(SolverType.NearestNeighbor.ToString(), comparer.Winner());
+        }
+
+        [TestMethod]
+        public void Test_Winner_ReturnsExpectedWhenTie()
+        {
+            var comparer = new TwoSolverStatisticComparer(SolverType.AddShortest, SolverType.NearestNeighbor);
+            AddWins(comparer, SolverType.AddShortest, 15);
+            AddWins(comparer, SolverType.NearestNeighbor, 15);
+            Assert.AreEqual("tie", comparer.Winner());
+        }
+
+        [TestMethod]
         public void Test_AddWins_ThrowsWhenInvalidSolverType()
         {
             var comparer = new TwoSolverStatisticComparer(SolverType.AddShortest, SolverType.NearestNeighbor);

@@ -27,11 +27,15 @@ namespace TravelingSalesman.objects
         public double asTotalDistance { get; private set; } = 0;
         public double wnnTotalDistance { get; private set; } = 0;
 
-        public int nnWins = 0;
-        public int asWins = 0;
-        public int wnnWins = 0;
-        public int ties = 0;
+        public int nnWins { get; private set; } = 0;
+        public int asWins { get; private set; } = 0;
+        public int wnnWins { get; private set; } = 0;
+        public int ties { get; private set; } = 0;
 
+        /// <summary>
+        /// If print mode is enabled, spits out a message to the console about the current run.
+        /// </summary>
+        /// <param name="message"></param>
         private void Print(string message)
         {
             if (!shouldPrint)
@@ -41,6 +45,11 @@ namespace TravelingSalesman.objects
             Console.WriteLine(message);
         }
 
+        /// <summary>
+        /// Runs a solver.
+        /// </summary>
+        /// <param name="solver"></param>
+        /// <param name="solverName"></param>
         private void Execute(ISolver solver, string solverName)
         {
             stopWatch.Reset();
@@ -52,6 +61,10 @@ namespace TravelingSalesman.objects
             Print($"{solverName} completed in {duration}ms");
         }
 
+        /// <summary>
+        /// Runs a slew of tests to see if NN, AS, or WNN is better.
+        /// </summary>
+        /// <exception cref="Exception"></exception>
         public void Run()
         {
             for(var i = 0; i < runs; i++)
@@ -169,6 +182,9 @@ namespace TravelingSalesman.objects
             }
         }
 
+        /// <summary>
+        /// Prints out a list of stats to the screen for the given run.
+        /// </summary>
         public void Stats()
         {
             Console.WriteLine("------");
@@ -181,7 +197,8 @@ namespace TravelingSalesman.objects
             Console.WriteLine($"NN Total Distance: {nnTotalDistance}");
             Console.WriteLine($"NN Total Time: {nnTotalDuration}ms");
             Console.WriteLine("---");
-            Console.WriteLine("Solver win rates: <Winning solver> (<left wins>:<right wins>:<ties>)");
+            Console.WriteLine("Solver win rates:");
+            Console.WriteLine("<A> vs <B>: <A|B> (<A wins>:<B wins>:<ties>)");
             Console.WriteLine($"AS vs WNN: {asVsWnn.Winner()} ({asVsWnn.FirstSolverWins}:{asVsWnn.SecondSolverWins}:{asVsWnn.Ties})");
             Console.WriteLine($"AS vs NN: {asVsNn.Winner()} ({asVsNn.FirstSolverWins}:{asVsNn.SecondSolverWins}:{asVsNn.Ties})");
             Console.WriteLine($"WNN vs NN: {wnnVsNn.Winner()} ({wnnVsNn.FirstSolverWins}:{wnnVsNn.SecondSolverWins}:{wnnVsNn.Ties})");
