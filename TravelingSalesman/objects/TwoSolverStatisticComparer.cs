@@ -2,14 +2,29 @@
 
 namespace TravelingSalesman.objects
 {
-    public class TwoSolverStatisticComparer(SolverType firstSolver, SolverType secondSolver)
+    public class TwoSolverStatisticComparer(SolverType first, SolverType second)
     {
-        public SolverType FirstSolverType { get; } = firstSolver;
-        public SolverType SecondSolverType { get; } = secondSolver;
+        public SolverType FirstSolverType { get; } = first;
+        public SolverType SecondSolverType { get; } = second;
 
         public int FirstSolverWins { get; private set; } = 0;
         public int SecondSolverWins { get; private set; } = 0;
         public int Ties { get; private set; } = 0;
+
+        public string Winner()
+        {
+            if (FirstSolverWins > SecondSolverWins && FirstSolverWins > Ties)
+            {
+                return FirstSolverType.ToString();
+            }
+
+            if (SecondSolverWins > FirstSolverWins && SecondSolverWins > Ties)
+            {
+                return SecondSolverType.ToString();
+            }
+
+            return "tie";
+        }
 
         public void AddWin(SolverType solverType)
         {
