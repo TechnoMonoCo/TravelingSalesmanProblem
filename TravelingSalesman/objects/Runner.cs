@@ -50,15 +50,15 @@ namespace TravelingSalesman.objects
         /// </summary>
         /// <param name="solver"></param>
         /// <param name="solverName"></param>
-        private void Execute(ISolver solver, string solverName)
+        private void Execute(ISolver solver)
         {
             stopWatch.Reset();
-            Print($"Starting {solverName} run.");
+            Print($"Starting {solver.GetSolverType()} run.");
             stopWatch.Start();
             solver.Solve();
             stopWatch.Stop();
             var duration = stopWatch.DurationInMs();
-            Print($"{solverName} completed in {duration}ms");
+            Print($"{solver.GetSolverType()} completed in {duration}ms");
         }
 
         /// <summary>
@@ -85,17 +85,17 @@ namespace TravelingSalesman.objects
                 }
 
                 var nn = new NearestNeighbor(nnNodes);
-                Execute(nn, "NN");
+                Execute(nn);
                 var nnDuration = stopWatch.DurationInMs();
                 nnTotalDuration += nnDuration;
 
                 var addShort = new AddShortest(asNodes);
-                Execute(addShort, "AS");
+                Execute(addShort);
                 var asDuration = stopWatch.DurationInMs();
                 asTotalDuration += asDuration;
 
                 var wnn = new WeightedNearestNeighbor(wnnNodes);
-                Execute(wnn, "WNN");
+                Execute(wnn);
                 var wnnDuration = stopWatch.DurationInMs();
                 wnnTotalDuration += wnnDuration;
 
