@@ -1,4 +1,5 @@
-﻿using TravelingSalesman.objects;
+﻿using TravelingSalesman.enums;
+using TravelingSalesman.objects;
 
 namespace TravelingSalesman.solvers
 {
@@ -79,6 +80,15 @@ namespace TravelingSalesman.solvers
         public List<Node> GetPath()
         {
             return traversalOrder;
+        }
+
+        /// <summary>
+        /// Returns the solver type of the solver.
+        /// </summary>
+        /// <returns></returns>
+        public SolverType GetSolverType()
+        {
+            return SolverType.NearestNeighbor;
         }
     }
 }

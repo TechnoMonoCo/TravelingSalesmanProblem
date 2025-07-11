@@ -1,4 +1,5 @@
-﻿using TravelingSalesman.objects;
+﻿using TravelingSalesman.enums;
+using TravelingSalesman.objects;
 
 namespace TravelingSalesman.solvers
 {
@@ -7,5 +8,7 @@ namespace TravelingSalesman.solvers
         void Solve();
 
         List<Node> GetPath();
+
+        SolverType GetSolverType();
     }
 }
