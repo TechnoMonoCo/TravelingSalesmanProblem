@@ -1,4 +1,5 @@
-﻿using TravelingSalesman.helpers;
+﻿using TravelingSalesman.enums;
+using TravelingSalesman.helpers;
 using TravelingSalesman.objects;
 
 namespace TravelingSalesman.solvers
@@ -78,6 +79,15 @@ namespace TravelingSalesman.solvers
         public List<Node> GetPath()
         {
             return path;
+        }
+
+        /// <summary>
+        /// Returns the solver type of the solver.
+        /// </summary>
+        /// <returns></returns>
+        public SolverType GetSolverType()
+        {
+            return SolverType.AddShortest;
         }
     }
 }

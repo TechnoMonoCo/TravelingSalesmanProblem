@@ -1,4 +1,5 @@
-﻿using TravelingSalesman.helpers;
+﻿using TravelingSalesman.enums;
+using TravelingSalesman.helpers;
 using TravelingSalesman.solvers;
 
 namespace TravelingSalesman.objects
@@ -12,7 +13,9 @@ namespace TravelingSalesman.objects
         private readonly bool shouldPrint = shouldPrint;
         private readonly StopWatch stopWatch = new StopWatch();
 
-        // TODO: Add a better way to compare WNN to NN and AS to NN.
+        private TwoSolverStatisticComparer asVsNn = new TwoSolverStatisticComparer(SolverType.AddShortest, SolverType.NearestNeighbor);
+        private TwoSolverStatisticComparer asVsWnn = new TwoSolverStatisticComparer(SolverType.AddShortest, SolverType.WeightedNearestNeighbor);
+        private TwoSolverStatisticComparer wnnVsNn = new TwoSolverStatisticComparer(SolverType.WeightedNearestNeighbor, SolverType.NearestNeighbor);
 
         // Start these at 1 to prevent DIV0.
         // Since these are in MS, it should be negligable differences.
@@ -29,6 +32,10 @@ namespace TravelingSalesman.objects
         public int wnnWins { get; private set; } = 0;
         public int ties { get; private set; } = 0;
 
+        /// <summary>
+        /// If print mode is enabled, spits out a message to the console about the current run.
+        /// </summary>
+        /// <param name="message"></param>
         private void Print(string message)
         {
             if (!shouldPrint)
@@ -38,17 +45,26 @@ namespace TravelingSalesman.objects
             Console.WriteLine(message);
         }
 
-        private void Execute(ISolver solver, string solverName)
+        /// <summary>
+        /// Runs a solver.
+        /// </summary>
+        /// <param name="solver"></param>
+        /// <param name="solverName"></param>
+        private void Execute(ISolver solver)
         {
             stopWatch.Reset();
-            Print($"Starting {solverName} run.");
+            Print($"Starting {solver.GetSolverType()} run.");
             stopWatch.Start();
             solver.Solve();
             stopWatch.Stop();
             var duration = stopWatch.DurationInMs();
-            Print($"{solverName} completed in {duration}ms");
+            Print($"{solver.GetSolverType()} completed in {duration}ms");
         }
 
+        /// <summary>
+        /// Runs a slew of tests to see if NN, AS, or WNN is better.
+        /// </summary>
+        /// <exception cref="Exception"></exception>
         public void Run()
         {
             for(var i = 0; i < runs; i++)
@@ -69,17 +85,17 @@ namespace TravelingSalesman.objects
                 }
 
                 var nn = new NearestNeighbor(nnNodes);
-                Execute(nn, "NN");
+                Execute(nn);
                 var nnDuration = stopWatch.DurationInMs();
                 nnTotalDuration += nnDuration;
 
                 var addShort = new AddShortest(asNodes);
-                Execute(addShort, "AS");
+                Execute(addShort);
                 var asDuration = stopWatch.DurationInMs();
                 asTotalDuration += asDuration;
 
                 var wnn = new WeightedNearestNeighbor(wnnNodes);
-                Execute(wnn, "WNN");
+                Execute(wnn);
                 var wnnDuration = stopWatch.DurationInMs();
                 wnnTotalDuration += wnnDuration;
 
@@ -108,51 +124,84 @@ namespace TravelingSalesman.objects
                 var wnnDistance = Helpers.CalculatePathDistance(wnnPath);
                 wnnTotalDistance += wnnDistance;
 
-                if (nnDistance < asDistance && nnDistance < wnnDistance)
+                if (asDistance < nnDistance)
                 {
-                    Print("NN was shortest!");
-                    nnWins++;
+                    asVsNn.AddWin(SolverType.AddShortest);
                 }
-                else if (asDistance < nnDistance && asDistance < wnnDistance)
+                else if (asDistance > nnDistance)
                 {
-                    Print("AS was shortest!");
+                    asVsNn.AddWin(SolverType.NearestNeighbor);
+                }
+                else
+                {
+                    asVsNn.AddTie();
+                }
+
+                if (asDistance < wnnDistance)
+                {
+                    asVsWnn.AddWin(SolverType.AddShortest);
+                }
+                else if (asDistance > wnnDistance)
+                {
+                    asVsWnn.AddWin(SolverType.WeightedNearestNeighbor);
+                }
+                else
+                {
+                    asVsWnn.AddTie();
+                }
+
+                if (wnnDistance < nnDistance)
+                {
+                    wnnVsNn.AddWin(SolverType.WeightedNearestNeighbor);
+                }
+                else if (wnnDistance > nnDistance)
+                {
+                    wnnVsNn.AddWin(SolverType.NearestNeighbor);
+                }
+                else
+                {
+                    wnnVsNn.AddTie();
+                }
+
+                if (asDistance < nnDistance && asDistance < wnnDistance)
+                {
                     asWins++;
                 }
                 else if (wnnDistance < asDistance && wnnDistance < nnDistance)
                 {
-                    Print("WNN was shortest!");
-                    asWins++;
+                    wnnWins++;
                 }
-                // TODO: WNN-NN, WNN-AS, NN-AS, and 3-way ties to differentiate?
+                else if (nnDistance < asDistance && nnDistance < wnnDistance)
+                {
+                    nnWins++;
+                }
                 else
                 {
-                    Print("Two or more algs tied!");
                     ties++;
                 }
             }
         }
 
+        /// <summary>
+        /// Prints out a list of stats to the screen for the given run.
+        /// </summary>
         public void Stats()
         {
-            Console.WriteLine("---");
-            Console.WriteLine($"WNN Total Distance: {wnnTotalDistance}");
-            Console.WriteLine($"WNN Total Time: {wnnTotalDuration}ms");
-            Console.WriteLine($"WNN Wins: {wnnWins}");
             Console.WriteLine("------");
             Console.WriteLine($"AS Total Distance: {asTotalDistance}");
             Console.WriteLine($"AS Total Time: {asTotalDuration}ms");
-            Console.WriteLine($"AS Wins: {asWins}");
+            Console.WriteLine("---");
+            Console.WriteLine($"WNN Total Distance: {wnnTotalDistance}");
+            Console.WriteLine($"WNN Total Time: {wnnTotalDuration}ms");
             Console.WriteLine("---");
             Console.WriteLine($"NN Total Distance: {nnTotalDistance}");
             Console.WriteLine($"NN Total Time: {nnTotalDuration}ms");
-            Console.WriteLine($"NN Wins: {nnWins}");
             Console.WriteLine("---");
-            Console.WriteLine($"Ties: {ties}");
-            Console.WriteLine("---");
-
-            // TODO: Write the below to be a better representation of data to include WNN as well.
-            // NOTE: This number is misleading when the node count is smaller due to NN running in <1 ms most of the time.
-            //Console.WriteLine($"AS ran {(asTotalDuration - nnTotalDuration) / nnTotalDuration}x longer than NN on average.");
+            Console.WriteLine("Solver win rates:");
+            Console.WriteLine("<A> vs <B>: <A|B> (<A wins>:<B wins>:<ties>)");
+            Console.WriteLine($"AS vs WNN: {asVsWnn.Winner()} ({asVsWnn.FirstSolverWins}:{asVsWnn.SecondSolverWins}:{asVsWnn.Ties})");
+            Console.WriteLine($"AS vs NN: {asVsNn.Winner()} ({asVsNn.FirstSolverWins}:{asVsNn.SecondSolverWins}:{asVsNn.Ties})");
+            Console.WriteLine($"WNN vs NN: {wnnVsNn.Winner()} ({wnnVsNn.FirstSolverWins}:{wnnVsNn.SecondSolverWins}:{wnnVsNn.Ties})");
         }
     }
 }

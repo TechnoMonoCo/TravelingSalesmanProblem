@@ -42,7 +42,7 @@ for (var i = 10; i <= 1000; i += 10)
 var runs = asWins + nnWins + ties;
 
 Console.WriteLine("\n\n\n\n\nFINAL STATS!\n---------");
-Console.WriteLine($"NN:\nWINS:{nnWins} ({100.0 * nnWins / runs})\nTIME: {nnTime}ms\nDIST: {nnDistance}\n");
-Console.WriteLine($"AS:\nWINS:{asWins} ({100.0 * asWins / runs})\nTIME: {asTime}ms\nDIST: {asDistance}");
-Console.WriteLine($"WNN:\nWINS:{wnnWins} ({100.0 * wnnWins / runs})\nTIME: {wnnTime}ms\nDIST: {wnnDistance}\n");
-Console.WriteLine($"Ties: {ties} ({100.0 * ties / runs})");
+Console.WriteLine($"NN:\nWINS:{nnWins} ({100.0 * nnWins / runs}%)\nTIME: {nnTime}ms\nDIST: {nnDistance}\n");
+Console.WriteLine($"AS:\nWINS:{asWins} ({100.0 * asWins / runs}%)\nTIME: {asTime}ms\nDIST: {asDistance}\n");
+Console.WriteLine($"WNN:\nWINS:{wnnWins} ({100.0 * wnnWins / runs}%)\nTIME: {wnnTime}ms\nDIST: {wnnDistance}\n");
+Console.WriteLine($"Ties: {ties} ({100.0 * ties / runs}%)");
